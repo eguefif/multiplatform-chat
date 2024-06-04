@@ -2,7 +2,7 @@ import asyncio
 from server import Server
 
 async def main():
-    server = Server("localhost", 8765)  
+    server = Server("localhost", 3000)  
     await server.run()
 
 if __name__ == "__main__":

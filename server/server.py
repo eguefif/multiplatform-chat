@@ -4,7 +4,7 @@ from websockets.server import serve
 from client import Client
 
 class Server:
-    def __init__(self, host = "localhost", port = 8765):
+    def __init__(self, host = "localhost", port = 3000):
         self.clients = []
         self.host = host
         self.port = port
@@ -15,7 +15,7 @@ class Server:
         new_client = await self.register_client(websocket)
         if not new_client:
             return
-        await self.send_clients_list(new_client)
+        await self.send_clients_list()
         await asyncio.gather(self.consumer_handler(new_client))
 
     def checkIdentifyCommand(self, cmd):
@@ -35,12 +35,13 @@ class Server:
         self.clients.append(new_client)
         return new_client
         
-    async def send_clients_list(self, new_client):
-        clients_username = [client.username for client in self.clients if client.username != new_client.username]
+    async def send_clients_list(self):
+        clients_username = [client.username for client in self.clients]
         if (len(clients_username) == 0):
             return
         clients_list = "clients: " + " ".join(clients_username)
-        await new_client.websocket.send(clients_list)
+        for client in self.clients:
+            await client.websocket.send(clients_list)
 
     async def consumer_handler(self, client):
         async for message in client.websocket:
@@ -67,5 +68,6 @@ class Server:
                 await client.websocket.send(conversation.getSerializedJson())
 
     async def run(self):
+        print("Server running on ws://{}:{}".format(self.host, self.port))
         async with serve(self.handler_client, self.host, self.port):
             await asyncio.Future()
