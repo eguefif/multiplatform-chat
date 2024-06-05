@@ -1,7 +1,9 @@
 class UserModel {
-  String username;
+  final List<String> username;
 
-  UserModel({required this.username});
+  const UserModel({required this.username});
 
-  UserModel.fromJson(Map<String, dynamic> json) : username = json['username'];
+  String get lastUsername => username.last;
+
+  UserModel.fromJson(Map<String, dynamic> json) : username = [json['username']];
 }

@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_client/models/user_list_model.dart';
+import 'package:flutter_client/providers/user_list_provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends ConsumerWidget {
   const HomePage({super.key});
 
-  final List<String> users = const ["Robert", "Alain", "Sarah", "Pascal"];
-
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final UserListModel userList = ref.watch(userListProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text("Home"),
@@ -22,10 +24,11 @@ class HomePage extends StatelessWidget {
               const SizedBox(height: 10),
               Expanded(
                 child: ListView.builder(
-                  itemCount: users.length,
+                  itemCount: userList.length,
                   itemBuilder: (BuildContext context, int index) {
+                    final user = userList.users[index].lastUsername;
                     return ListTile(
-                      title: Text(users[index]),
+                      title: Text(user),
                       onTap: () {
                         Navigator.of(context).pushNamed("/chat");
                       },

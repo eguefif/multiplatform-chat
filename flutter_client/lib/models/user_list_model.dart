@@ -1,9 +1,11 @@
 import 'package:flutter_client/models/user_model.dart';
 
 class UserListModel {
-  List<UserModel> users;
+  final List<UserModel> users;
 
-  UserListModel({required this.users});
+  const UserListModel({required this.users});
+
+  int get length => users.length;
 
   factory UserListModel.fromJson(Map<String, dynamic> json) {
     return UserListModel(
