@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_client/models/user_information_model.dart';
+import 'package:flutter_client/pages/homepage/ask_username.dart';
 import 'package:flutter_client/providers/user_information_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../Widgets/default_app_bar.dart';
-import 'ask_username.dart';
 import 'chat_page.dart';
 
 class HomePage extends ConsumerWidget {

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_client/pages/homepage/home_page.dart';
 import 'package:flutter_client/providers/websocket_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../Views/user_list_view.dart';
+import '../../Views/user_list_view.dart';
+import 'error_connection_view.dart';
 
 class ChatPage extends ConsumerWidget {
   const ChatPage({super.key});
