@@ -1,6 +1,3 @@
-import json
-
-
 class ConversationHandler:
     def __init__(self):
         self.conversations = []
@@ -31,13 +28,6 @@ class Conversation:
 
     def isPartOf(self, user):
         return self.user1 == user or self.user2 == user
-
-    def getSerializedJson(self):
-        return json.dumps({
-            "user1": self.user1,
-            "user2": self.user2,
-            "messages": self.messages
-        })
 
     def __str__(self):
         return f"Conversation between {self.user1} and {self.user2} with messages: {self.messages}"

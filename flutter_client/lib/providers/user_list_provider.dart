@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter_client/models/user_list_model.dart';
 import 'package:flutter_client/models/user_model.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -13,14 +11,13 @@ class UserListNotifier extends _$UserListNotifier {
     return UserListModel();
   }
 
-  void addUserFromJson(String serializedUserList) {
-    List<String> userList = jsonDecode(serializedUserList);
-
+  void addUsers(List<String> userList) {
     for (String user in userList) {
-      if (!state.contains(user)) {
+      if (!state.contains(user) && user != "Emmanuel") {
         state.addUser(UserModel(username: user));
       }
     }
+    print("UserList: ${state.users}");
   }
 
   void removeUser(String username) {
