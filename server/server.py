@@ -1,7 +1,8 @@
 import asyncio
 from enum import Enum
 import json
-from websockets.server import serve
+import signal
+import websockets
 
 from client import Client
 from conversation import ConversationHandler
@@ -122,8 +123,7 @@ class Server:
             if conversation.isPartOf(client.username):
                 await self.send_message(packet, client)
 
-
     async def run(self):
         print("Server running on ws://{}:{}".format(self.host, self.port))
-        async with serve(self.handler_client, self.host, self.port):
+        async with websockets.serve(self.handler_client, self.host, self.port):
             await asyncio.Future()

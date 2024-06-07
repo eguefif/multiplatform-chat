@@ -11,13 +11,11 @@ class UserListNotifier extends _$UserListNotifier {
     return UserListModel();
   }
 
-  void addUsers(List<String> userList) {
-    for (String user in userList) {
-      if (!state.contains(user) && user != "Emmanuel") {
-        state.addUser(UserModel(username: user));
-      }
-    }
-    print("UserList: ${state.users}");
+  void updateList(List<String> userList) {
+    var userListWithoutUser =
+        userList.where((element) => element != "Emmanuel").toList();
+    state.users =
+        userListWithoutUser.map((e) => UserModel(username: e)).toList();
   }
 
   void removeUser(String username) {

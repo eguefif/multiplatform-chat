@@ -11,27 +11,37 @@ class HomePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     AsyncValue<dynamic> ws = ref.watch(webSocketProvider);
-    return switch(ws){
+    return switch (ws) {
       AsyncValue(:final error?) => ErrorConnection(error: error),
-      AsyncValue(:final item)  {
-        ref.read(messageManagerProvider(item));
-        return Scaffold(
+      AsyncValue(:final valueOrNull?) => Scaffold(
           appBar: AppBar(
             title: const Text("Home"),
           ),
-          body: const UserListView(),
-        );
-      }};}
+          body: UserListView(data: valueOrNull),
+        ),
+      _ => Scaffold(
+          appBar: AppBar(
+            title: const Text("Home"),
+          ),
+          body: const Center(
+            child: CircularProgressIndicator(),
+          ),
+        )
+    };
   }
 }
 
 class UserListView extends ConsumerWidget {
   const UserListView({
     super.key,
+    required this.data,
   });
+
+  final dynamic data;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    ref.read(messageManagerProvider(data));
     final UserListModel userList = ref.watch(userListNotifierProvider);
     return Center(
       child: Padding(

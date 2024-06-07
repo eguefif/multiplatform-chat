@@ -1,7 +1,7 @@
 import 'package:flutter_client/models/user_model.dart';
 
 class UserListModel {
-  final List<UserModel> users = [];
+  List<UserModel> users = [];
 
   int get length => users.length;
 

@@ -13,7 +13,7 @@ void messageManager(MessageManagerRef ref, String message) {
   switch (messageMap['command']) {
     case 'clientlist':
       List<String> content = List<String>.from(messageMap['content'] as List);
-      ref.read(userListNotifierProvider.notifier).addUsers(content);
+      ref.read(userListNotifierProvider.notifier).updateList(content);
       break;
   }
 }
