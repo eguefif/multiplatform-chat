@@ -1,16 +1,20 @@
 import 'package:flutter_client/models/user_model.dart';
 
 class UserListModel {
-  final List<UserModel> users;
-
-  const UserListModel({required this.users});
+  final List<UserModel> users = [];
 
   int get length => users.length;
 
-  factory UserListModel.fromJson(Map<String, dynamic> json) {
-    return UserListModel(
-      users:
-          List<UserModel>.from(json['users'].map((x) => UserModel.fromJson(x))),
-    );
+  void addUser(UserModel user) {
+    users.add(user);
+  }
+
+  void removeUser(String username) {
+    users.removeWhere((user) => user.username == username);
+  }
+
+  bool contains(String username) {
+    final test = users.where((user) => user.username == username);
+    return test.isNotEmpty;
   }
 }

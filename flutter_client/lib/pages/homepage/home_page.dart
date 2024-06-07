@@ -8,7 +8,7 @@ class HomePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final UserListModel userList = ref.watch(userListProvider);
+    final UserListModel userList = ref.watch(userListNotifierProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text("Home"),
@@ -26,9 +26,9 @@ class HomePage extends ConsumerWidget {
                 child: ListView.builder(
                   itemCount: userList.length,
                   itemBuilder: (BuildContext context, int index) {
-                    final user = userList.users[index].lastUsername;
+                    final user = userList.users[index];
                     return ListTile(
-                      title: Text(user),
+                      title: Text(user.username),
                       onTap: () {
                         Navigator.of(context).pushNamed("/chat");
                       },
