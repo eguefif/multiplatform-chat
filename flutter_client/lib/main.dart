@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_client/pages/services/socket_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'pages/chat/chat_page.dart';
 import 'pages/homepage/home_page.dart';
 
 void main() {
@@ -24,7 +23,7 @@ class MyApp extends StatelessWidget {
       ),
       routes: {
         "/": (context) => const HomePage(),
-        "/chat": (context) => const ChatPage(),
+        "/chat": (context) => const HomePage(),
       },
     );
   }

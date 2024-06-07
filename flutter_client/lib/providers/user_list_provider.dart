@@ -11,9 +11,9 @@ class UserListNotifier extends _$UserListNotifier {
     return UserListModel();
   }
 
-  void updateList(List<String> userList) {
+  void updateList(List<String> userList, String username) {
     var userListWithoutUser =
-        userList.where((element) => element != "Emmanuel").toList();
+        userList.where((element) => element != username).toList();
     state.users =
         userListWithoutUser.map((e) => UserModel(username: e)).toList();
   }

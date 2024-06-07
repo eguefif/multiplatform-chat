@@ -1,0 +1,3 @@
+class UserInformationModel {
+  String username = '';
+}
