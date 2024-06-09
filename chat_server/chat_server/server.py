@@ -1,11 +1,12 @@
 import asyncio
-from enum import Enum
 import json
-import signal
+from enum import Enum
+
 import websockets
 
-from client import Client
-from conversation import ConversationHandler
+from chat_server.client import Client
+from chat_server.conversation import ConversationHandler
+
 
 class Command(Enum):
     USERNAME = "username"
@@ -16,7 +17,7 @@ class Command(Enum):
 
 
 class Server:
-    def __init__(self, host = "0.0.0.0", port = 3000):
+    def __init__(self, host="0.0.0.0", port=3000):
         self.clients = set()
         self.host = host
         self.port = port
@@ -34,7 +35,6 @@ class Server:
         finally:
             await self.remove_client(new_client)
 
-   
     async def register_client(self, websocket):
         try:
             username_cmd = await websocket.recv()
@@ -49,7 +49,7 @@ class Server:
         new_client_id = self.current_id
         self.current_id += 1
         new_client = Client(websocket, username, new_client_id)
-        self.remove_client(new_client)
+        await self.remove_client(new_client)
         self.clients.add(new_client)
         print(f"New client connected: {username}")
         return new_client
@@ -59,21 +59,28 @@ class Server:
             if client.username == username:
                 return True
         return False
+
     def checkIdentifyCommand(self, message):
-        if isinstance(message, dict) and Command.USERNAME.value in message.keys():
+        if (
+            isinstance(message, dict)
+            and Command.USERNAME.value in message.keys()
+        ):
             return True
         return False
 
     async def send_clients_list(self):
         clients_list = [client.username for client in self.clients]
-        if (len(clients_list) == 0):
+        if len(clients_list) == 0:
             return
-        clients_list = {"command": Command.CLIENTLIST.value, "content": clients_list}
+        clients_list = {
+            "command": Command.CLIENTLIST.value,
+            "content": clients_list,
+        }
         packet = json.dumps(clients_list)
         for client in self.clients:
-                if not await self.send_message(packet, client):
-                    return
-    
+            if not await self.send_message(packet, client):
+                return
+
     async def send_message(self, packet, client):
         try:
             await client.websocket.send(packet)
@@ -81,7 +88,6 @@ class Server:
             await self.send_clients_list()
             return False
         return True
-
 
     async def remove_client(self, client):
         if client in self.clients:
@@ -93,7 +99,7 @@ class Server:
         async for message in client.websocket:
             if not await self.consumer(message, client):
                 return
-    
+
     async def consumer(self, message, client):
         message_loaded = json.loads(message)
         try:
@@ -105,7 +111,9 @@ class Server:
 
         if not self.is_recipient(recipient):
             return
-        conversation = self.conversation_handler.updateConversation(content, client.username, recipient)
+        conversation = self.conversation_handler.updateConversation(
+            content, client.username, recipient
+        )
         if conversation:
             await self.send_conversation(conversation)
         return True

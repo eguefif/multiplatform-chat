@@ -20,11 +20,15 @@ class Conversation:
         self.messages = []
 
     def isBetween(self, user1, user2):
-        return (self.user1 == user1 and self.user2 == user2) or (self.user1 == user2 and self.user2 == user1)
+        return (self.user1 == user1 and self.user2 == user2) or (
+            self.user1 == user2 and self.user2 == user1
+        )
 
     def addMessage(self, message, src):
         recipient = self.user1 if src == self.user2 else self.user2
-        self.messages.append({"src": src, "recipient": recipient, "message": message})
+        self.messages.append(
+            {"src": src, "recipient": recipient, "message": message}
+        )
 
     def isPartOf(self, user):
         return self.user1 == user or self.user2 == user
