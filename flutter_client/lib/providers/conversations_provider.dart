@@ -3,37 +3,53 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'conversations_provider.g.dart';
 
 @riverpod
-class Conversations extends _$Conversations {
+class ConversationsNotifier extends _$ConversationsNotifier {
   @override
   ConversationsModel build() {
-    return ConversationsModel(currentRecipient: "", conversations: [
-      Conversation(recipient: "Robert", messages: [
-        Message(recipient: "Robert", src: "Emmanuel", message: "Hello"),
-        Message(recipient: "Emmanuel", src: "Robert", message: "Hello you"),
-        Message(
-            recipient: "Robert",
-            src: "Emmanuel",
-            message: "How are your doing?"),
-        Message(
-            recipient: "Robert",
-            src: "Emmanuel",
-            message: "I hope you are doing well"),
-      ])
-    ]);
+    return ConversationsModel();
   }
 
-  void changeCurrentRecipient(String recipient) {
-    state = ConversationsModel(
-        currentRecipient: recipient, conversations: state.conversations);
+  void updateConversation(List<Map<String, String>> content, String username) {
+    String? recipient = _getRecipient(content, username);
+    if (recipient != null) {
+      Conversation conversation = Conversation(
+        recipient: recipient,
+        messages: content
+            .map<Message>((message) => Message.fromJson(message))
+            .toList(),
+      );
+      if (state.isRecipient(recipient)) {
+        state.conversations
+            .removeWhere((conversation) => conversation.recipient == recipient);
+      }
+      state.conversations.add(conversation);
+    }
+  }
+
+  String? _getRecipient(List<Map<String, String>> content, String username) {
+    if (content.isNotEmpty) {
+      var message = content[0];
+      return message['src'] == username ? message['recipient'] : message['src'];
+    }
+    return null;
   }
 }
 
 class ConversationsModel {
-  String currentRecipient;
   List<Conversation> conversations;
 
-  ConversationsModel(
-      {this.currentRecipient = "", this.conversations = const []});
+  ConversationsModel({this.conversations = const []});
+
+  String getConversation(String recipient) {
+    Conversation conversation = conversations
+        .firstWhere((conversation) => conversation.recipient == recipient);
+    return conversation.getConversationStr();
+  }
+
+  bool isRecipient(String recipient) {
+    return conversations
+        .any((conversation) => conversation.recipient == recipient);
+  }
 }
 
 class Conversation {
@@ -49,6 +65,15 @@ class Conversation {
           .map<Message>((message) => Message.fromJson(message))
           .toList(),
     );
+  }
+
+  String getConversationStr() {
+    if (messages.isEmpty) {
+      return "No messages yet";
+    }
+    return messages
+        .map((message) => "${message.src}: ${message.message}")
+        .join("\n");
   }
 }
 

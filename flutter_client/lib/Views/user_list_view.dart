@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_client/models/user_list_model.dart';
-import 'package:flutter_client/providers/conversations_provider.dart';
 import 'package:flutter_client/providers/message_manager_provider.dart';
 import 'package:flutter_client/providers/user_list_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -34,10 +33,8 @@ class UserListView extends ConsumerWidget {
                   return ListTile(
                     title: Text(user.username),
                     onTap: () {
-                      ref
-                          .read(conversationsProvider.notifier)
-                          .changeCurrentRecipient(user.username);
-                      Navigator.of(context).pushNamed("/chat");
+                      Navigator.of(context)
+                          .pushNamed("/chat", arguments: user.username);
                     },
                   );
                 },

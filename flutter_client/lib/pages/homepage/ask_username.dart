@@ -5,9 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../Widgets/default_app_bar.dart';
 
 class AskUsername extends ConsumerWidget {
-  AskUsername({super.key, required this.updateUsername});
+  AskUsername({super.key});
   final TextEditingController controller = TextEditingController();
-  final void Function(String username) updateUsername;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -28,7 +27,7 @@ class AskUsername extends ConsumerWidget {
                   ref
                       .read(userInformationProvider.notifier)
                       .updateUsername(value);
-                  updateUsername(value);
+                  Navigator.of(context).pushNamed("/");
                 },
               ),
               const SizedBox(height: 10),
@@ -37,7 +36,7 @@ class AskUsername extends ConsumerWidget {
                   ref
                       .read(userInformationProvider.notifier)
                       .updateUsername(controller.text);
-                  updateUsername(controller.text);
+                  Navigator.of(context).pushNamed("/");
                 },
                 child: const Text("Submit"),
               ),

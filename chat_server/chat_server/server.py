@@ -115,6 +115,7 @@ class Server:
             content, client.username, recipient
         )
         if conversation:
+            print("New message: ", conversation)
             await self.send_conversation(conversation)
         return True
 

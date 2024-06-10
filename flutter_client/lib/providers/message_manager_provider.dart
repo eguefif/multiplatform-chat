@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter_client/providers/conversations_provider.dart';
 import 'package:flutter_client/providers/user_information_provider.dart';
 import 'package:flutter_client/providers/user_list_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -15,5 +16,12 @@ void messageManager(MessageManagerRef ref, String message) {
       List<String> content = List<String>.from(messageMap['content'] as List);
       ref.read(userListNotifierProvider.notifier).updateList(content, username);
       break;
+    case 'message':
+      List<Map<String, String>> content =
+          List<Map<String, String>>.from(messageMap['content'] as List);
+      print(content);
+      ref
+          .read(conversationsNotifierProvider.notifier)
+          .updateConversation(content, username);
   }
 }

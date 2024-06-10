@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_client/providers/conversations_provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class Chat extends StatefulWidget {
+class Chat extends ConsumerStatefulWidget {
   const Chat({
     super.key,
+    required this.recipient,
   });
+
+  final String recipient;
+
   @override
-  State<StatefulWidget> createState() => _ChatState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _ChatState();
 }
 
-class _ChatState extends State<Chat> {
-  List<String> messages = <String>[];
+class _ChatState extends ConsumerState<Chat> {
   late TextEditingController _controller;
 
   @override
@@ -20,7 +25,6 @@ class _ChatState extends State<Chat> {
 
   void updateChat(String message) {
     setState(() {
-      messages.add(message);
       _controller.clear();
     });
   }
@@ -33,6 +37,9 @@ class _ChatState extends State<Chat> {
 
   @override
   Widget build(BuildContext context) {
+    String conversation = ref
+        .watch(conversationsNotifierProvider)
+        .getConversation(widget.recipient);
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: Column(
@@ -40,7 +47,7 @@ class _ChatState extends State<Chat> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Expanded(
-            child: Text(messages.join("\n")),
+            child: Text(conversation),
           ),
           TextField(
             controller: _controller,
