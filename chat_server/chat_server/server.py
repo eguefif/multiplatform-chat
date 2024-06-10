@@ -4,8 +4,8 @@ from enum import Enum
 
 import websockets
 
-from chat_server.client import Client
-from chat_server.conversation import ConversationHandler
+from client import Client
+from conversation import ConversationHandler
 
 
 class Command(Enum):

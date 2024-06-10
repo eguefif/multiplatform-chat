@@ -5,27 +5,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../Views/user_list_view.dart';
 import 'error_connection_view.dart';
 
-class ChatPage extends ConsumerWidget {
-  const ChatPage({super.key});
+class UserListLoadingPage extends ConsumerWidget {
+  const UserListLoadingPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     AsyncValue<dynamic> ws = ref.watch(webSocketProvider);
     return switch (ws) {
       AsyncValue(:final error?) => ErrorConnectionView(error: error),
-      AsyncValue(:final valueOrNull?) => Scaffold(
-          appBar: AppBar(
-            title: const Text("Home"),
-          ),
-          body: UserListView(data: valueOrNull),
-        ),
-      _ => Scaffold(
-          appBar: AppBar(
-            title: const Text("Home"),
-          ),
-          body: const Center(
-            child: CircularProgressIndicator(),
-          ),
+      AsyncValue(:final valueOrNull?) => UserListView(data: valueOrNull),
+      _ => const Center(
+          child: CircularProgressIndicator(),
         )
     };
   }

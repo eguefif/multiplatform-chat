@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_client/pages/homepage/ask_username.dart';
-import 'package:flutter_client/pages/services/socket_service.dart';
+import 'package:flutter_client/pages/chat/chat_page.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'pages/homepage/home_page.dart';
 
 void main() {
-  SocketService socket = SocketService();
-  socket.initConnection();
+  // SocketService socket = SocketService();
+  // socket.initConnection();
   runApp(const ProviderScope(child: MyApp()));
 }
 
@@ -24,7 +23,7 @@ class MyApp extends StatelessWidget {
       ),
       routes: {
         "/": (context) => const HomePage(),
-        "/chat": (context) => const HomePage(),
+        "/chat": (context) => const ChatPage(),
       },
     );
   }

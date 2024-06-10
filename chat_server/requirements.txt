@@ -1,5 +1,4 @@
 black==24.4.2
--e git+ssh://git@github.com/eguefif/multiplatform-chat.git@392311dc42bdbb1894ce0e24ccbe457d160368ea#egg=chat_server&subdirectory=chat_server
 click==8.1.7
 flake8==7.0.0
 iniconfig==2.0.0
